@@ -1,5 +1,14 @@
 import keras
 
+
+labels = ["airplane", " automobile", "bird", " cat", "deer", "dog", "frog", "horse", "ship", "truck"]
+(train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
+train_labels = keras.utils.to_categorical(train_labels)
+test_labels = keras.utils.to_categorical(test_labels)
+
+train_images = train_images.astype("float32") / 255.0
+test_images = test_images.astype("float32") / 255.0
+
 # Create the model as a sequential type so we can add layers in order
 model = keras.models.Sequential()
 # Add the first convolution to output a feature map
@@ -28,15 +37,6 @@ model.add(keras.layers.Dropout(rate=0.5))
 # activation: softmax because we are calculating probabilities for each of the 10 categories (not as clear as 0 or 1)
 model.add(keras.layers.Dense(units=10, activation="softmax"))
 
-
-(train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
-
-
-train_labels = keras.utils.to_categorical(train_labels)
-test_labels = keras.utils.to_categorical(test_labels)
-
-train_images = train_images.astype("float32")
-train_images = train_images/255.0
-test_images = test_images.astype("float32")
-test_images = test_images/255.0
+model.compile(optimizer=keras.optimizers.SGD(learning_rate=0.01), loss="categorical_crossentropy", metrics=["accuracy"])
+model.fit(x=train_images, y=train_labels, epochs=10, batch_size=32)
 
