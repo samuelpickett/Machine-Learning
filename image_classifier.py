@@ -41,6 +41,6 @@ model.add(Dropout(rate=0.5))
 model.add(Dense(units=10, activation="softmax"))
 
 model.compile(optimizer=SGD(learning_rate=0.01), loss="categorical_crossentropy", metrics=["accuracy"])
-model.fit(x=train_images, y=train_labels, epochs=1, batch_size=32)
+model.fit(x=train_images, y=train_labels, epochs=30, batch_size=32)
 
 model.save(filepath="image_classifier.keras")
