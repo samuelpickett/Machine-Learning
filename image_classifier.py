@@ -1,11 +1,11 @@
 from keras.api.models import Sequential
 from keras.api.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-from keras.api.datasets import cifar10
+from keras.api.datasets import cifar100
 from keras.api.optimizers import SGD
 from keras.api.utils import to_categorical
 from keras.api.constraints import max_norm
 labels = ["airplane", " automobile", "bird", " cat", "deer", "dog", "frog", "horse", "ship", "truck"]
-(train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
+(train_images, train_labels), (test_images, test_labels) = cifar100.load_data()
 train_labels = to_categorical(train_labels)
 test_labels = to_categorical(test_labels)
 
@@ -36,11 +36,11 @@ model.add(Dense(units=512, activation="relu", kernel_constraint=max_norm(3)))
 # rate: 0.5 means half neurons dropped
 model.add(Dropout(rate=0.5))
 # Final dense layer used to produce output for each of the 10 categories
-# units: 10 categories so 10 output units
+# units: 100 categories so 100 output units
 # activation: softmax because we are calculating probabilities for each of the 10 categories (not as clear as 0 or 1)
-model.add(Dense(units=10, activation="softmax"))
+model.add(Dense(units=100, activation="softmax"))
 
 model.compile(optimizer=SGD(learning_rate=0.01), loss="categorical_crossentropy", metrics=["accuracy"])
-model.fit(x=train_images, y=train_labels, epochs=50, batch_size=32)
+model.fit(x=train_images, y=train_labels, epochs=150, batch_size=32)
 
 model.save(filepath="image_classifier.keras")
